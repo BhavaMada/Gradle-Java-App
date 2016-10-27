@@ -1,0 +1,78 @@
+apply plugin: 'java'
+apply plugin: "com.jfrog.artifactory"
+apply plugin: 'maven-publish'
+
+
+defaultTasks 'artifactoryPublish'
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.21'
+    testCompile 'junit:junit:4.12'
+}
+
+
+buildscript {
+    repositories {
+        maven {
+            url 'http://localhost:8081/artifactory/plugins-release'
+            credentials {
+                username = "${artifactory_user}"
+                password = "${artifactory_password}"
+            }            
+        }
+        
+    }
+    dependencies {        
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4+"
+    }
+}
+
+
+artifactory {
+    contextUrl = "${artifactory_contextUrl}" 
+    publish {
+        repository {
+            repoKey = 'Bhava-Gradle-Local-Repo'
+            //repoKey = 'libs-release-local'
+            //repoKey = 'plugins-release-local'
+            username = "${artifactory_user}"
+            password = "${artifactory_password}"
+            maven = true            
+        }
+      
+            defaults {
+            	// Define Gradle Publications from which to collect the list of artifacts to be deployed to Artifactory
+				publications 'maven'
+            } 
+   
+    }
+    resolve {
+        repository {
+            repoKey = 'libs-release'
+            username = "${artifactory_user}"
+            password = "${artifactory_password}"
+            maven = true
+            
+        }
+    }
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			groupId 'com.bhava'
+			version '2.0'
+			artifactId 'GradleJavaApp'
+			artifact jar { extension 'jar' }
+			
+			//from components.java
+			
+			//artifact file("\build\libs\jar-1.0.0.jar")
+		}
+	}
+}
+
+
+
+
+
