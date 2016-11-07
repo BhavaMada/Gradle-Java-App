@@ -23,7 +23,8 @@ buildscript {
         
     }
     dependencies {        
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4+"
+        // classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4+"
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.3.0"
     }
 }
 
@@ -61,7 +62,7 @@ publishing {
 	publications {
 		maven(MavenPublication) {
 			groupId 'com.bhava'
-			version '2.0'
+			version '2.1'
 			artifactId 'GradleJavaApp'
 			artifact jar { extension 'jar' }
 			
